@@ -1,25 +1,45 @@
-import React, {  useEffect, useRef,useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatchCart, useCart } from "./ContextReducer";
 import { set } from "mongoose";
 
 export default function Card({ foodItem = {}, options = {} }) {
     const dispatch = useDispatchCart();
     let data = useCart()
-    const priceRef=useRef();
+    const priceRef = useRef();
     const priceOptions = Object.keys(options);
     const [qty, setQty] = useState(1)
     const [size, setSize] = useState("")
 
     const handleAddToCart = async () => {
+        let food = []
+        for (const item of data) {
+            if (item.id === foodItem._id) {
+                food = item;
+                break;
+            }
+        }
+        if (food !== []) {
+            if (food.size === size) {
+                await dispatch({ type: "UPDATE", id: foodItem._id, price: finalPrice, qty: qty })
+                return
+            } else if (food.size != size) {
+                await dispatch({ type: "ADD", id: foodItem._id, name: foodItem.name, price: finalPrice, qty: qty, size: size })
+                console.log("Added to cart:", foodItem.name);
+                return
+                //await console.log(data);
+            }
+            return
+        }
         await dispatch({ type: "ADD", id: foodItem._id, name: foodItem.name, price: finalPrice, qty: qty, size: size })
-        console.log("Added to cart:", foodItem.name);
-        await console.log(data);
+
+
     }
     let finalPrice = qty * parseInt(options[size]);
-    useEffect(()=>{
-        setSize(priceRef.current.value)},[]
+    useEffect(() => {
+        setSize(priceRef.current.value)
+    }, []
     )
-    
+
 
     return (
         <div>
