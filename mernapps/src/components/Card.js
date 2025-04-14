@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatchCart, useCart } from "./ContextReducer";
-import { set } from "mongoose";
+//import { set } from "mongoose";
 
 export default function Card({ foodItem = {}, options = {} }) {
     const dispatch = useDispatchCart();
@@ -51,7 +51,7 @@ export default function Card({ foodItem = {}, options = {} }) {
                     style={{ height: "180px", objectFit: "fill" }}
                 />
                 <div className="card-body">
-                    <h5 className="card-title">{foodItem.name || "Unknown Item"}</h5>
+                    <h5 className="card-title">{foodItem.name}</h5>
 
                     <div className="container w-100">
                         <select className="m-2 h-100 bg-success rounded" onChange={(e) => setQty(e.target.value)}>
@@ -78,7 +78,7 @@ export default function Card({ foodItem = {}, options = {} }) {
                     <div className="d-inline h-100 fs-5">₹{finalPrice}/-</div>
                 </div>
 
-                <hr />
+
 
                 <button className="btn btn-success justify-center mx-2" onClick={handleAddToCart}>
                     Add To Cart
