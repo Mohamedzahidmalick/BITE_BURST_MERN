@@ -1,27 +1,30 @@
-const express = require('express')
-const app = express()
-const port = 5000
-const mongoDB = require('./db') // Ensure correct path
-mongoDB(); // Call the function to connect to MongoDB
+const express = require('express');
+const app = express();
+const cors = require('cors');
+const mongoDB = require('./db'); // MongoDB connection function
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin,X-Requested-With,Content-Type,Accept"
+// Connect to MongoDB
+mongoDB();
 
-  );
-  next();
+// Middleware
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
+app.use(express.json()); // To parse incoming JSON requests
 
-})
-app.use(express.json())
-app.use('/api', require("./Routes/CreateUser"));
-app.use('/api', require("./Routes/DisplayData"));
-app.use('/api', require("./Routes/OrderData"));
+// Routes
+app.use('/api', require('./Routes/CreateUser'));
+app.use('/api', require('./Routes/DisplayData'));
+app.use('/api', require('./Routes/OrderData'));
+
+// Default route
 app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+  res.send('Hello from backend server!');
+});
+
+// Start server
 const PORT = process.env.PORT || 5000;
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
