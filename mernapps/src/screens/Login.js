@@ -1,56 +1,92 @@
-import React, { useState } from 'react'
-import { Link,useNavigate } from 'react-router-dom'
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "../styles/Auth.css";
 
 export default function Login() {
-  const [credentials, setcredentials] = useState({ email: "", password: "" })
-let navigate=useNavigate()
+  const [credentials, setcredentials] = useState({ email: "", password: "" });
+  let navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(JSON.stringify({ email: credentials.email, password: credentials.password }))
+    console.log(
+      JSON.stringify({
+        email: credentials.email,
+        password: credentials.password,
+      }),
+    );
     const response = await fetch("http://localhost:5000/api/loginuser", {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email: credentials.email, password: credentials.password })
+      body: JSON.stringify({
+        email: credentials.email,
+        password: credentials.password,
+      }),
     });
-    const json = await response.json()
+    const json = await response.json();
     console.log(json);
 
     if (!json.success) {
-      alert("Enter a valid credentials")
+      toast.error("Invalid email or password!");
     }
 
     if (json.success) {
-      localStorage.setItem("authToken",json.authToken);
-      console.log(localStorage.getItem("authToken"))
+      localStorage.setItem("userEmail", credentials.email);
+      localStorage.setItem("authToken", json.authToken);
+      console.log(localStorage.getItem("authToken"));
+      console.log(
+        "Stored Email in localStorage:",
+        localStorage.getItem("userEmail"),
+      );
       navigate("/");
+      toast.success("Logged in successfully!");
     }
-
-  }
+  };
 
   const onChange = (event) => {
-    setcredentials({ ...credentials, [event.target.name]: event.target.value })
-
-  }
+    setcredentials({ ...credentials, [event.target.name]: event.target.value });
+  };
   return (
-    <div><div className="container">
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-          <input type="email" className="form-control" name='email' value={credentials.email} onChange={onChange} id="exampleInputEmail1" />
-          <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-          <input type="password" className="form-control" name='password' value={credentials.password} onChange={onChange} id="exampleInputPassword1" />
-        </div>
+    <div className="auth-page">
+      <div className="auth-card">
+        <h2>🍔 BiteBurst</h2>
 
-        <button type="submit" className="btn btn-success">Submit</button>
-        <Link to="/createuser" className="m-3 btn btn-danger">New User</Link>
-      </form>
+        <p className="text-center text-light">
+          Welcome back, login to continue
+        </p>
 
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            className="form-control my-3"
+            placeholder="Email Address"
+            name="email"
+            value={credentials.email}
+            onChange={onChange}
+          />
+
+          <input
+            type="password"
+            className="form-control my-3"
+            placeholder="Password"
+            name="password"
+            value={credentials.password}
+            onChange={onChange}
+          />
+
+          <button className="btn btn-success auth-btn" type="submit">
+            Login
+          </button>
+
+          <div className="text-center mt-3">
+            New User?
+            <Link className="text-success mx-2" to="/createuser">
+              Create Account
+            </Link>
+          </div>
+        </form>
+      </div>
     </div>
-    </div>
-  )
+  );
 }

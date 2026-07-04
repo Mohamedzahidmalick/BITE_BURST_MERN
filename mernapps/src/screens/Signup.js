@@ -1,8 +1,12 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState} from 'react'
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import "../styles/Auth.css";
+
 
 export default function Signup() {
   const [credentials, setcredentials] = useState({ name: "", email: "", password: "", geolocation: "" })
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,9 +20,11 @@ export default function Signup() {
     })
     const json = await response.json()
     console.log(json);
-
-    if (!json.success) {
-      alert("Enter a valid credentials")
+    if(json.success){
+toast.success("Account created successfully!");
+    navigate("/login");
+}    else{
+      toast.error("Enter a valid credentials");
     }
 
   }
@@ -28,33 +34,87 @@ export default function Signup() {
 
   }
   return (
-    <>
-      <div className="container">
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="name" className="form-label">Name</label>
-            <input type="text" className="form-control" name='name' value={credentials.name} onChange={onChange} />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-            <input type="email" className="form-control" name='email' value={credentials.email} onChange={onChange} id="exampleInputEmail1" />
-            <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
-          </div>
-          <div className="mb-3">
-            <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-            <input type="password" className="form-control" name='password' value={credentials.password} onChange={onChange} id="exampleInputPassword1" />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="exampleInputPassword1" className="form-label">Address</label>
-            <input type="text" className="form-control" name='geolocation' value={credentials.geolocation} onChange={onChange} id="exampleInputPassword1" />
-          </div>
+  <div className="auth-page">
 
-          <button type="submit" className="btn btn-success">Submit</button>
-          <Link to="/login" className="m-3 btn btn-danger">Already user</Link>
-        </form>
+    <div className="auth-card">
 
-      </div>
+      <h2>
+        🍔 BiteBurst
+      </h2>
 
-    </>
-  )
+      <p className="text-center text-light">
+        Create your account and start ordering
+      </p>
+
+
+      <form onSubmit={handleSubmit}>
+
+        <input
+          type="text"
+          className="form-control my-3"
+          placeholder="Full Name"
+          name="name"
+          value={credentials.name}
+          onChange={onChange}
+        />
+
+
+        <input
+          type="email"
+          className="form-control my-3"
+          placeholder="Email Address"
+          name="email"
+          value={credentials.email}
+          onChange={onChange}
+        />
+
+
+        <input
+          type="password"
+          className="form-control my-3"
+          placeholder="Password"
+          name="password"
+          value={credentials.password}
+          onChange={onChange}
+        />
+
+
+        <input
+          type="text"
+          className="form-control my-3"
+          placeholder="Delivery Address"
+          name="geolocation"
+          value={credentials.geolocation}
+          onChange={onChange}
+        />
+
+
+        <button
+          type="submit"
+          className="btn btn-success auth-btn"
+        >
+          Create Account
+        </button>
+
+
+        <div className="text-center mt-3">
+
+          Already have an account?
+
+          <Link
+            to="/login"
+            className="text-success mx-2"
+          >
+            Login
+          </Link>
+
+        </div>
+
+
+      </form>
+
+    </div>
+
+  </div>
+)
 }

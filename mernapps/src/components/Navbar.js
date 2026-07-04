@@ -5,21 +5,27 @@ import Modal from '../Modal';
 import { set } from 'mongoose';
 import Cart from '../screens/Cart';
 import { useCart } from './ContextReducer';
+import { useDispatchCart } from "./ContextReducer";
 export default function Navbar() {
+    const dispatch = useDispatchCart();
     const [cartView, setCartView] = useState(false);
         let data = useCart();
     
     const Navigate = useNavigate();
     const handleLogout = () => {
-        localStorage.removeItem("authToken");
-        Navigate("/login")
 
-    }
+    dispatch({ type: "DROP" });
+
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userEmail");
+
+    Navigate("/login");
+}
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-dark bg-success">
                 <div className="container-fluid">
-                    <Link className="navbar-brand fs-1 fst-italic" to="/">GoFood</Link>
+                    <Link className="navbar-brand fs-1 fst-italic" to="/">BiteBurst</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>

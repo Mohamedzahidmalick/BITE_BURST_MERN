@@ -1,10 +1,11 @@
+require("dotenv").config();
 const express = require('express')
 const router = express.Router()
 const User = require('../models/User')
 const { body, validationResult } = require('express-validator');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const jwtSecret = "Mynameisz.mohamedzahidmalicktob"
+const jwtSecret = process.env.JWT_SECRET; // Use the secret key from environment variables
 router.post("/createuser", [
     body('email').isEmail(),
     body('name').isLength({ min: 5 }),

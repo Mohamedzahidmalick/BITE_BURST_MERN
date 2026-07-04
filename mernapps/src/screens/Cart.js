@@ -1,6 +1,7 @@
 import React from "react";
 import { useCart, useDispatchCart } from "../components/ContextReducer";
 import trash from "../assets/trash.svg";
+import { toast } from 'react-toastify';
 
 export default function Cart() {
     let data = useCart();
@@ -19,8 +20,10 @@ export default function Cart() {
         console.log("Email being sent to server:", userEmail);  // Should print the correct email
     
         if (!userEmail) {
-            alert("Please log in first.");
+            toast.warning("Please login before checkout.");
             return;
+        }else{
+            toast.success("Order placed successfully!");
         }
     
         let response = await fetch("http://localhost:5000/api/orderData", {

@@ -5,37 +5,40 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+
 import Login from './screens/Login';
+import Signup from './screens/Signup';
+import MyOrder from './screens/MyOrder';
+
+import { CartProvider } from './components/ContextReducer';
+
 import 'bootstrap-dark-5/dist/css/bootstrap-dark.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-//import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
-//import '../node_modules/bootstrap-dark-5/dist/css/bootstrap-dark.min.css'
-// // Keep only one import here
-import Signup from './screens/Signup';
-import { CartProvider } from './components/ContextReducer';
-import Cart from './screens/Cart';
-import MyOrder from './screens/MyOrder';
+
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
     <CartProvider>
-
       <Router>
-        <div>
-          <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route exact path="/login" element={<Login />} />
-            <Route exact path="/createuser" element={<Signup />} />
-            <Route exact path="/myOrder" element={<MyOrder />} />
 
-          </Routes>
-        </div>
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          theme="colored"
+        />
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/createuser" element={<Signup />} />
+          <Route path="/myOrder" element={<MyOrder />} />
+        </Routes>
+
       </Router>
     </CartProvider>
   );
 }
 
 export default App;
-
-//import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
-//import '../node_modules/bootstrap-dark-5/dist/css/bootstrap-dark.min.css'
