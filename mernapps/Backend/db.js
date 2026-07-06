@@ -1,33 +1,39 @@
 const mongoose = require('mongoose');
 
-// MongoDB URI
-const mongoURI = process.env.MONGO_URI;
 const mongoDB = async () => {
   try {
-    // Connect to MongoDB
-    await mongoose.connect(mongoURI);
+
+    if (!process.env.MONGO_URI) {
+      throw new Error("MONGO_URI is missing");
+    }
+
+    await mongoose.connect(process.env.MONGO_URI);
+
     console.log("MongoDB connected successfully!");
 
-    // Access the collections directly
-    const fetched_Data = mongoose.connection.db.collection("food_items");
-    const foodCategory = mongoose.connection.db.collection("foodCategory");
+    const fetched_Data =
+      mongoose.connection.db.collection("food_items");
 
-    // Fetch data from the "food_items" collection
+    const foodCategory =
+      mongoose.connection.db.collection("foodCategory");
+
+
     const data = await fetched_Data.find({}).toArray();
 
-    // Fetch data from the "foodCategory" collection
     const CategoryData = await foodCategory.find({}).toArray();
 
-    // Assign fetched data to global variables
+
     global.food_items = data;
     global.foodCategory = CategoryData;
 
+    console.log("Food data loaded successfully!");
 
   } catch (error) {
-    // Handle connection errors
+
     console.error("MongoDB connection error:", error);
+
   }
 };
 
-// Export the mongoDB function
+
 module.exports = mongoDB;
