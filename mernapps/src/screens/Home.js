@@ -12,7 +12,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   const loadData = async () => {
-    let response = await fetch("http://localhost:5000/api/foodData", {
+    let response = await fetch("https://bite-burst-mern.onrender.com/api/foodData", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'

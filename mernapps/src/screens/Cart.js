@@ -26,7 +26,7 @@ export default function Cart() {
             toast.success("Order placed successfully!");
         }
     
-        let response = await fetch("http://localhost:5000/api/orderData", {
+        let response = await fetch("https://bite-burst-mern.onrender.com/api/orderData", {
             method: 'POST',
             headers: {
                 'Content-Type': "application/json"
