@@ -9,8 +9,12 @@ mongoDB();
 //console.log(process.env.MONGO_URI);
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true
+    origin: [
+        "http://localhost:3000",
+        "https://bite-burst-mern-app-wheat.vercel.app"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
 }));
 app.use(express.json()); // To parse incoming JSON requests
 
